@@ -71,10 +71,18 @@ vim.api.nvim_create_autocmd("Filetype", {
 -- Changes tab settings for specific languages
 vim.api.nvim_create_autocmd("Filetype", {
     pattern = {
-        "ocaml", "ruby", "vim", "crystal", "tex", "javascript",
+        "ocaml", "ruby", "vim", "crystal", "tex", "javascript", "typescript",
         "javascriptreact"
     },
-    command = "setlocal expandtab tabstop=2 shiftwidth=2",
+    callback = function()
+        vim.opt.expandtab = true
+        vim.opt.tabstop = 2
+        vim.opt.shiftwidth = 2
+        vim.opt.spelllang = 'en_us'
+        vim.opt.spell = true
+        vim.opt.textwidth = 100
+        vim.opt.formatoptions = ""
+    end,
     group = indentation_group
 })
 
@@ -113,5 +121,4 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 
 -- Folding code defaults
 vim.opt.foldmethod = "syntax"
-
 

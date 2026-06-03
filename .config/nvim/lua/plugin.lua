@@ -15,28 +15,70 @@
 --
 -- plugins for neovim
 --------------------------------------------------------------------------------
--- The plugin loader
-local yapm = require("yapm")
+vim.pack.add({
+    {
+        src = "https://github.com/wincent/base16-nvim.git",
+        version = "ebee297b217eb1ae6e4fe81e39f195cf6d7d5c5c"
+    }, {
+        src = "https://github.com/nvim-lualine/lualine.nvim.git",
+        version = "221ce6b2d999187044529f49da6554a92f740a96"
+    }, {
+        src = "https://github.com/edkolev/tmuxline.vim.git",
+        version = "4119c553923212cc67f4e135e6f946dc3ec0a4d6"
+    }, {
+        src = "https://github.com/lewis6991/gitsigns.nvim.git",
+        version = "dd3f588bacbeb041be6facf1742e42097f62165d"
+    }, {
+        src = "https://github.com/alexghergh/nvim-tmux-navigation.git",
+        version = "4898c98702954439233fdaf764c39636681e2861"
+    }, {
+        src = "https://github.com/nvim-telescope/telescope.nvim.git",
+        version = "7d324792b7943e4aa16ad007212e6acc6f9fe335"
+    }, {
+        src = "https://github.com/nvim-lua/plenary.nvim.git",
+        version = "74b06c6c75e4eeb3108ec01852001636d85a932b"
+    }, {
+        src = "https://github.com/stevearc/conform.nvim.git",
+        version = "619363c30309d29ffa631e67c8183f2a72caa373"
+    }, {
+        src = "https://github.com/hrsh7th/nvim-cmp.git",
+        version = "a1d504892f2bc56c2e79b65c6faded2fd21f3eca"
+    }, {
+        src = "https://github.com/hrsh7th/cmp-nvim-lsp.git",
+        version = "cbc7b02bb99fae35cb42f514762b89b5126651ef"
+    }, {
+        src = "https://github.com/hrsh7th/cmp-buffer.git",
+        version = "b74fab3656eea9de20a9b8116afa3cfc4ec09657"
+    }, {
+        src = "https://github.com/hrsh7th/cmp-path.git",
+        version = "c642487086dbd9a93160e1679a1327be111cbc25"
+    }, {
+        src = "https://github.com/hrsh7th/cmp-nvim-lua.git",
+        version = "e3a22cb071eb9d6508a156306b102c45cd2d573d"
+    }, {
+        src = "https://github.com/onsails/lspkind.nvim.git",
+        version = "c7274c48137396526b59d86232eabcdc7fed8a32"
+    }, {
+        src = "https://github.com/neovim/nvim-lspconfig.git",
+        version = "07dff35e7c95288861200b788ef32d6103f107f0"
+    }, {
+        src = "https://github.com/folke/trouble.nvim.git",
+        version = "bd67efe408d4816e25e8491cc5ad4088e708a69a"
+    }
+})
 
 --------------------------------------------------------------------------------
 -- Appearence
 --------------------------------------------------------------------------------
 --
 -- Loads the color scheme
-yapm.load("wincent/base16-nvim")
-vim.cmd.colorscheme("base16-eighties")
-
--- Adds annoying red for trailing whitespace
-yapm.load("bronson/vim-trailing-whitespace")
+vim.cmd.colorscheme("eighties")
 
 -- Shows cool status bar
 vim.opt.laststatus = 2
 vim.opt.showmode = false
 
 -- Adds a status line below
-yapm.load("nvim-lualine/lualine.nvim")
-yapm.load("nvim-lua/lsp-status.nvim")
-
 require('lualine').setup {
     options = {
         icons_enabled = true,
@@ -66,15 +108,11 @@ require('lualine').setup {
     extensions = {}
 }
 
-require("lsp-status").config({status_symbol = ''})
-
 --------------------------------------------------------------------------------
 -- tmuxline settings
 --
 -- Something that spits out tmux config to make it match vim theming
 --------------------------------------------------------------------------------
-
-yapm.load("edkolev/tmuxline.vim")
 
 -- Generate current theme by :Tmuxline lightline_insert
 vim.g.tmuxline_powerline_separators = 0
@@ -95,26 +133,13 @@ vim.g.tmuxline_preset = {
 -- Shows lines modified with git
 --------------------------------------------------------------------------------
 
-yapm.load("nvim-lua/plenary.nvim")
-yapm.load("lewis6991/gitsigns.nvim")
-
 require("gitsigns").setup({
     signs = {
-        add = {
-            text = "+",
-        },
-        change = {
-            text = "~",
-        },
-        delete = {
-            text = "-",
-        },
-        topdelete = {
-            text = "-",
-        },
-        changedelete = {
-            text = "~",
-        }
+        add = {text = "+"},
+        change = {text = "~"},
+        delete = {text = "-"},
+        topdelete = {text = "-"},
+        changedelete = {text = "~"}
     }
 })
 
@@ -124,11 +149,11 @@ require("gitsigns").setup({
 -- File explorer in vim
 --------------------------------------------------------------------------------
 
-yapm.load("nvim-web-devicons")
-yapm.load("nvim-tree.lua")
-
-require("nvim-tree").setup({})
-vim.api.nvim_set_keymap("n", "<C-n>", ":NvimTreeFindFileToggle<CR>", {})
+-- yapm.load("nvim-web-devicons")
+-- yapm.load("nvim-tree.lua")
+--
+-- require("nvim-tree").setup({})
+-- vim.api.nvim_set_keymap("n", "<C-n>", ":NvimTreeFindFileToggle<CR>", {})
 
 --------------------------------------------------------------------------------
 -- alpha-nvim settings
@@ -137,25 +162,23 @@ vim.api.nvim_set_keymap("n", "<C-n>", ":NvimTreeFindFileToggle<CR>", {})
 --------------------------------------------------------------------------------
 
 -- requires nvim-web-devicons included above
-yapm.load("alpha-nvim")
-
-require("alpha").setup(require("alpha.themes.startify").opts)
+-- require("alpha").setup(require("alpha.themes.startify").opts)
 
 --------------------------------------------------------------------------------
--- vim-tmux-navigator settings
+-- nvim-tmux-navigator settings
 --
 -- Navigating tmux and vim panes with shortcuts
 --------------------------------------------------------------------------------
 
-yapm.load("vim-tmux-navigator")
+local nvim_tmux_nav = require('nvim-tmux-navigation')
 
-vim.keymap.set("n", "<C-h>", ":TmuxNavigateLeft<cr>",
+vim.keymap.set("n", "<C-h>", nvim_tmux_nav.NvimTmuxNavigateLeft,
                {noremap = true, silent = true})
-vim.keymap.set("n", "<C-j>", ":TmuxNavigateDown<cr>",
+vim.keymap.set("n", "<C-j>", nvim_tmux_nav.NvimTmuxNavigateDown,
                {noremap = true, silent = true})
-vim.keymap.set("n", "<C-k>", ":TmuxNavigateUp<cr>",
+vim.keymap.set("n", "<C-k>", nvim_tmux_nav.NvimTmuxNavigateUp,
                {noremap = true, silent = true})
-vim.keymap.set("n", "<C-l>", ":TmuxNavigateRight<cr>",
+vim.keymap.set("n", "<C-l>", nvim_tmux_nav.NvimTmuxNavigateRight,
                {noremap = true, silent = true})
 
 --------------------------------------------------------------------------------
@@ -163,8 +186,6 @@ vim.keymap.set("n", "<C-l>", ":TmuxNavigateRight<cr>",
 --
 -- File navigation
 --------------------------------------------------------------------------------
-
-yapm.load("telescope.nvim")
 
 require('telescope').setup {
     defaults = {
@@ -205,38 +226,30 @@ vim.keymap.set("n", "<leader>fb", builtin.buffers, {noremap = true})
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, {noremap = true})
 
 --------------------------------------------------------------------------------
--- TAGBAR settings
---------------------------------------------------------------------------------
-
-yapm.load("tagbar")
-
-vim.api.nvim_set_keymap("n", "<S-t>", ":TagbarToggle<CR>", {})
-
---------------------------------------------------------------------------------
 -- vim-smooth-scroll settings
 --------------------------------------------------------------------------------
 
-yapm.load("vim-smooth-scroll")
-vim.api.nvim_set_keymap("n", "<c-u>",
-                        ":call smooth_scroll#up(&scroll, 10, 2)<CR>",
-                        {noremap = true, silent = true})
-vim.api.nvim_set_keymap("n", "<c-d>",
-                        ":call smooth_scroll#down(&scroll, 10, 2)<CR>",
-                        {noremap = true, silent = true})
-vim.api.nvim_set_keymap("n", "<c-b>",
-                        ":call smooth_scroll#up(&scroll*2, 20, 4)<CR>",
-                        {noremap = true, silent = true})
-vim.api.nvim_set_keymap("n", "<c-f>",
-                        ":call smooth_scroll#down(&scroll*2, 20, 4)<CR>",
-                        {noremap = true, silent = true})
+-- yapm.load("vim-smooth-scroll")
+-- vim.api.nvim_set_keymap("n", "<c-u>",
+--                         ":call smooth_scroll#up(&scroll, 10, 2)<CR>",
+--                         {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap("n", "<c-d>",
+--                         ":call smooth_scroll#down(&scroll, 10, 2)<CR>",
+--                         {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap("n", "<c-b>",
+--                         ":call smooth_scroll#up(&scroll*2, 20, 4)<CR>",
+--                         {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap("n", "<c-f>",
+--                         ":call smooth_scroll#down(&scroll*2, 20, 4)<CR>",
+--                         {noremap = true, silent = true})
 
---------------------------------------------------------------------------------
--- CurtineIncSw cpp-h file navigator settings
---------------------------------------------------------------------------------
-
-yapm.load("CurtineIncSw.vim")
-
-vim.keymap.set("", "<F5>", ":call CurtineIncSw()<CR>", {noremap = true})
+-- --------------------------------------------------------------------------------
+-- -- CurtineIncSw cpp-h file navigator settings
+-- --------------------------------------------------------------------------------
+--
+-- yapm.load("CurtineIncSw.vim")
+--
+-- vim.keymap.set("", "<F5>", ":call CurtineIncSw()<CR>", {noremap = true})
 
 --------------------------------------------------------------------------------
 -- Languages
@@ -244,117 +257,131 @@ vim.keymap.set("", "<F5>", ":call CurtineIncSw()<CR>", {noremap = true})
 -- Support for various languages
 --------------------------------------------------------------------------------
 
-yapm.load("saltstack/salt-vim")
-yapm.load("rust-lang/rust.vim")
-yapm.load("vim-crystal/vim-crystal")
-yapm.load("rgrinberg/vim-ocaml")
-yapm.load("pearofducks/ansible-vim")
-yapm.load("hashivim/vim-terraform")
-yapm.load("martinda/Jenkinsfile-vim-syntax")
-yapm.load("PhilT/vim-fsharp")
-yapm.load("lervag/vimtex")
-yapm.load("ron-rs/ron.vim")
-
-vim.g.ocaml_folding = 1
-
-vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
-    pattern = {"*/playbooks/*"},
-    command = "set filetype=yaml.ansible"
-})
-
+-- yapm.load("saltstack/salt-vim")
+-- yapm.load("rust-lang/rust.vim")
+-- yapm.load("vim-crystal/vim-crystal")
+-- yapm.load("rgrinberg/vim-ocaml")
+-- yapm.load("pearofducks/ansible-vim")
+-- yapm.load("hashivim/vim-terraform")
+-- yapm.load("martinda/Jenkinsfile-vim-syntax")
+-- yapm.load("lervag/vimtex")
+-- -- yapm.load("ron-rs/ron.vim")
+--
+-- vim.g.ocaml_folding = 1
+--
+-- vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
+--     pattern = {"*/playbooks/*"},
+--     command = "set filetype=yaml.ansible"
+-- })
+--
 --------------------------------------------------------------------------------
 -- Comment.nvim settings
 --
 -- code for commenting out stuff
 --------------------------------------------------------------------------------
 
-yapm.load("numToStr/Comment.nvim")
-
-require('Comment').setup({
-    ---Add a space b/w comment and the line
-    ---@type boolean
-    padding = true,
-
-    ---Whether the cursor should stay at its position
-    ---NOTE: This only affects NORMAL mode mappings and doesn't work with dot-repeat
-    ---@type boolean
-    sticky = true,
-
-    ---Lines to be ignored while comment/uncomment.
-    ---Could be a regex string or a function that returns a regex string.
-    ---Example: Use '^$' to ignore empty lines
-    ---@type string|fun():string
-    ignore = nil,
-
-    ---LHS of toggle mappings in NORMAL + VISUAL mode
-    ---@type table
-    toggler = {
-        ---Line-comment toggle keymap
-        line = 'gcc',
-        ---Block-comment toggle keymap
-        block = 'gbc'
-    },
-
-    ---LHS of operator-pending mappings in NORMAL + VISUAL mode
-    ---@type table
-    opleader = {
-        ---Line-comment keymap
-        line = 'gc',
-        ---Block-comment keymap
-        block = 'gb'
-    },
-
-    ---LHS of extra mappings
-    ---@type table
-    extra = {
-        ---Add comment on the line above
-        above = 'gcO',
-        ---Add comment on the line below
-        below = 'gco',
-        ---Add comment at the end of line
-        eol = 'gcA'
-    },
-
-    ---Create basic (operator-pending) and extended mappings for NORMAL + VISUAL mode
-    ---@type table
-    mappings = {
-        ---Operator-pending mapping
-        ---Includes `gcc`, `gbc`, `gc[count]{motion}` and `gb[count]{motion}`
-        ---NOTE: These mappings can be changed individually by `opleader` and `toggler` config
-        basic = true,
-        ---Extra mapping
-        ---Includes `gco`, `gcO`, `gcA`
-        extra = true,
-        ---Extended mapping
-        ---Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
-        extended = false
-    },
-})
-
+-- yapm.load("numToStr/Comment.nvim")
+--
+-- require('Comment').setup({
+--     ---Add a space b/w comment and the line
+--     ---@type boolean
+--     padding = true,
+--
+--     ---Whether the cursor should stay at its position
+--     ---NOTE: This only affects NORMAL mode mappings and doesn't work with dot-repeat
+--     ---@type boolean
+--     sticky = true,
+--
+--     ---Lines to be ignored while comment/uncomment.
+--     ---Could be a regex string or a function that returns a regex string.
+--     ---Example: Use '^$' to ignore empty lines
+--     ---@type string|fun():string
+--     ignore = nil,
+--
+--     ---LHS of toggle mappings in NORMAL + VISUAL mode
+--     ---@type table
+--     toggler = {
+--         ---Line-comment toggle keymap
+--         line = 'gcc',
+--         ---Block-comment toggle keymap
+--         block = 'gbc'
+--     },
+--
+--     ---LHS of operator-pending mappings in NORMAL + VISUAL mode
+--     ---@type table
+--     opleader = {
+--         ---Line-comment keymap
+--         line = 'gc',
+--         ---Block-comment keymap
+--         block = 'gb'
+--     },
+--
+--     ---LHS of extra mappings
+--     ---@type table
+--     extra = {
+--         ---Add comment on the line above
+--         above = 'gcO',
+--         ---Add comment on the line below
+--         below = 'gco',
+--         ---Add comment at the end of line
+--         eol = 'gcA'
+--     },
+--
+--     ---Create basic (operator-pending) and extended mappings for NORMAL + VISUAL mode
+--     ---@type table
+--     mappings = {
+--         ---Operator-pending mapping
+--         ---Includes `gcc`, `gbc`, `gc[count]{motion}` and `gb[count]{motion}`
+--         ---NOTE: These mappings can be changed individually by `opleader` and `toggler` config
+--         basic = true,
+--         ---Extra mapping
+--         ---Includes `gco`, `gcO`, `gcA`
+--         extra = true,
+--         ---Extended mapping
+--         ---Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
+--         extended = false
+--     },
+-- })
+--
 --------------------------------------------------------------------------------
 -- neoformat settings
 --
 -- Autoformats code with autoformatters
 --------------------------------------------------------------------------------
 
-yapm.load("sbdchd/neoformat")
+require("conform").setup({
+    formatters_by_ft = {
+        lua = {"lua-format"},
+        python = {"ruff"},
+        rust = {"rustfmt", lsp_format = "fallback"},
+        javascript = {"prettierd", "prettier", stop_after_first = true}
+    }
+})
 
-vim.api.nvim_set_keymap("", "<leader>k", ":Neoformat<cr>",
-                        {noremap = true, silent = true})
+vim.api.nvim_create_user_command("Format", function(args)
+    local range = nil
+    if args.count ~= -1 then
+        local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1,
+                                                    args.line2, true)[1]
+        range = {
+            start = {args.line1, 0},
+            ["end"] = {args.line2, end_line:len()}
+        }
+    end
+    require("conform").format({
+        async = true,
+        lsp_format = "fallback",
+        range = range
+    })
+end, {range = true})
 
-vim.g.neoformat_try_node_exe = 1
+vim.keymap.set("", "<leader>k",
+               function() require("conform").format({async = true}) end,
+               {noremap = true, silent = true})
 
 --------------------------------------------------------------------------------
 -- Autocompletion settings
 --------------------------------------------------------------------------------
-
-yapm.load("nvim-cmp")
-yapm.load("cmp-nvim-lsp")
-yapm.load("cmp-buffer")
-yapm.load("cmp-nvim-lua")
-yapm.load("cmp-path")
-yapm.load("LuaSnip")
-yapm.load("lspkind-nvim")
 
 -- sets the wildmenu for tab completion
 vim.opt.wildmenu = true
@@ -367,47 +394,6 @@ vim.opt.complete = vim.opt.complete - "i"
 -- By default it autocompletes to the first item in the list, which you can tab
 -- through.
 vim.opt.completeopt = "menu,menuone,preview"
-
--- _G.tab_or_complete = function()
---     local column = vim.api.nvim_win_get_cursor(0)[2]
---     local line = vim.api.nvim_get_current_line()
---     local before_curser = line:sub(0, column)
---     if column == 0 or before_curser:match("^%s*$") then
---         return vim.api.nvim_replace_termcodes("<Tab>", true, false, true)
---     else
---         if vim.fn.pumvisible() == 0 and vim.opt.omnifunc:get() ~= "" then
---             return vim.api.nvim_replace_termcodes("<C-x><C-o>", true, false,
---                                                   true)
---         else
---             return vim.api.nvim_replace_termcodes("<C-n>", true, false, true)
---         end
---     end
--- end
---
--- _G.shift_tab_or_complete = function()
---     local column = vim.api.nvim_win_get_cursor(0)[2]
---     local line = vim.api.nvim_get_current_line()
---     local before_curser = line:sub(0, column)
---     if column == 0 or before_curser:match('^%s*$') then
---         return vim.api.nvim_replace_termcodes("<Tab>", true, false, true)
---     else
---         return vim.api.nvim_replace_termcodes("<C-p>", true, false, true)
---     end
--- end
-
--- Tab will now autocomplete if there is leading chars
--- vim.api.nvim_set_keymap("i", "<TAB>", "<C-R>=v:lua.tab_or_complete()<CR>",
---                         {noremap = true, silent = true})
-
--- vim.api.nvim_set_keymap("i", "<S-TAB>",
---                         "<C-R>=v:lua.shift_tab_or_complete()<CR>",
---                         {noremap = true, silent = true})
-
--- Makes enter act as autocomplete select if an item is selected.
--- By default it acts like enter
--- vim.api.nvim_set_keymap("i", "<CR>",
---                         'pumvisible() ? "\\<C-y>" : "\\<C-g>u\\<CR>"',
---                         {noremap = true, silent = true, expr = true})
 
 local cmp = require('cmp')
 local lspkind = require("lspkind")
@@ -465,9 +451,6 @@ cmp.setup({
 --------------------------------------------------------------------------------
 -- LSP Settings
 --------------------------------------------------------------------------------
-
-yapm.load("hrsh7th/cmp-nvim-lsp")
-yapm.load("neovim/nvim-lspconfig")
 
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
@@ -539,17 +522,11 @@ end
 --     vim.lsp.config().clangd.setup(standard_lsp_options)
 -- end
 
-if vim.fn.executable("crystalline") == 1 then
-    vim.lsp.enable('crystalline')
-end
+if vim.fn.executable("crystalline") == 1 then vim.lsp.enable('crystalline') end
 
-if vim.fn.executable("ocamllsp") == 1 then
-    vim.lsp.enable('ocamllsp')
-end
+if vim.fn.executable("ocamllsp") == 1 then vim.lsp.enable('ocamllsp') end
 
-if vim.fn.executable("rust-analyzer") == 1 then
-    vim.lsp.enable('rust_analyzer')
-end
+if vim.fn.executable("rust-analyzer") == 1 then vim.lsp.enable('rust_analyzer') end
 
 -- if vim.fn.executable("pyright") == 1 then
 --     vim.lsp.config().pyright.setup(standard_lsp_options)
@@ -567,13 +544,12 @@ if vim.fn.executable("ansible-language-server") == 1 then
     vim.lsp.enable('ansiblels')
 end
 
-if vim.fn.executable("fsautocomplete") == 1 then
-    vim.lsp.enable('fsautocomplete')
-end
+if vim.fn.executable("yaml-language-server") == 1 then vim.lsp.enable('yamlls') end
 
-if vim.fn.executable("terraform-ls") == 1 then
-    vim.lsp.enable('terraformls')
-end
+if vim.fn.executable("fsautocomplete") == 1 then vim.lsp
+    .enable('fsautocomplete') end
+
+if vim.fn.executable("terraform-ls") == 1 then vim.lsp.enable('terraformls') end
 
 --------------------------------------------------------------------------------
 -- neovim trouble settings
@@ -581,57 +557,4 @@ end
 -- Trouble is a trouble/issues menu for lsp
 --------------------------------------------------------------------------------
 
-yapm.load("folke/trouble.nvim")
 require("trouble").setup({})
-
---------------------------------------------------------------------------------
--- neovim treesitter integration
---
--- syntax objects and highliting we will see how this goes
---------------------------------------------------------------------------------
-
-yapm.load("nvim-treesitter/nvim-treesitter")
-require('nvim-treesitter.configs').setup({
-    -- A list of parser names, or "all" (the five listed parsers should always be installed)
-    ensure_installed = {"c", "lua", "vim", "vimdoc", "query"},
-
-    -- Install parsers synchronously (only applied to `ensure_installed`)
-    sync_install = false,
-
-    -- Automatically install missing parsers when entering buffer
-    -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
-    auto_install = true,
-
-    -- List of parsers to ignore installing (or "all")
-    ignore_install = {},
-
-    ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
-    -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
-    modules = {},
-
-    highlight = {
-        enable = true,
-
-        -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
-        -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
-        -- the name of the parser)
-        -- list of language that will be disabled
-        -- disable = {"c", "rust"},
-        -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
-        -- disable = function(lang, buf)
-        --     local max_filesize = 100 * 1024 -- 100 KB
-        --     local ok, stats = pcall(vim.loop.fs_stat,
-        --                             vim.api.nvim_buf_get_name(buf))
-        --     if ok and stats and stats.size > max_filesize then
-        --         return true
-        --     end
-        -- end,
-        --
-        -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-        -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-        -- Using this option may slow down your editor, and you may see some duplicate highlights.
-        -- Instead of true it can also be a list of languages
-        additional_vim_regex_highlighting = false
-    }
-})
-

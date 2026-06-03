@@ -18,9 +18,20 @@
 require("base")
 
 if vim.opt.loadplugins:get() then
-    require("yapm").setup()
     require("plugin")
 end
+
+-- Adds annoying red for trailing whitespace
+-- Create a custom highlight group for trailing whitespace
+vim.api.nvim_set_hl(0, "TrailingWhitespace", {ctermbg = "red", fg = "red", bg = "red"})
+
+-- Apply the highlight pattern across windows automatically
+vim.api.nvim_create_autocmd({"BufEnter", "WinEnter", "InsertLeave"}, {
+    pattern = "*",
+    callback = function()
+        vim.fn.matchadd("TrailingWhitespace", [[\s\+$]])
+    end
+})
 
 -- Automatic, language-dependent indentation, syntax coloring and other
 -- functionality.
