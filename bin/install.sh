@@ -7,7 +7,7 @@ function dgit () {
 }
 
 if [ ! -d "$HOME/.dotfiles/" ]; then
-	git clone --bare "git@github.com:jglowe/dotfiles.git" "$HOME/.dotfiles"
+	git clone --bare "git@github.com:VeritasMeumLiberabit/dotfiles.git" "$HOME/.dotfiles"
 fi
 
 if ! files=$(dgit checkout master 2>&1); then

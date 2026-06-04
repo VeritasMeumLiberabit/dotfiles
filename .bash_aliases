@@ -11,7 +11,7 @@
 ################################################################################
 
 alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias dgit='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 if [ -x /usr/bin/nmtui ]; then
 	alias wifi="nmtui"
