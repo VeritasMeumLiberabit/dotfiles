@@ -155,22 +155,11 @@ else
 	print_module_status "rust-analyzer" false
 fi
 
-if [ -x "$(command -v ocamllsp)" ]; then
-	print_module_status "ocamllsp" true
+if [ -x "$(command -v opam)" ]; then
+	print_module_status "opam" true
+	eval $(opam env)
 else
-	print_module_status "ocamllsp" false
-fi
-
-if [ -x "$(command -v autopep8)" ]; then
-	print_module_status "autopep8" true
-else
-	print_module_status "autopep8" false
-fi
-
-if [ -x "$(command -v ansible-lint)" ]; then
-	print_module_status "ansible-lint" true
-else
-	print_module_status "ansible-lint" false
+	print_module_status "opam" false
 fi
 
 if [ -x "$(command -v clang-format)" ]; then
@@ -183,15 +172,6 @@ if [ -x "$(command -v tmux)" ]; then
 	print_module_status "tmux" true
 else
 	print_module_status "tmux" false
-fi
-
-export DOTNET_ROOT=$HOME/.dotnet
-export PATH=$PATH:$HOME/.dotnet:$HOME/.dotnet/tools
-
-if [ -x "$(command -v dotnet)" ]; then
-	print_module_status "dotnet" true
-else
-	print_module_status "dotnet" false
 fi
 
 # colored GCC warnings and errors

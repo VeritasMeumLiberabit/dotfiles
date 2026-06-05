@@ -17,12 +17,18 @@
 
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 hl.monitor({
-    output   = "",
-    mode     = "preferred",
-    position = "auto",
+    output   = "DP-3",
+    mode     = "2560x1440@144.00Hz",
+    position = "3008x0",
     scale    = "auto",
 })
 
+hl.monitor({
+    output   = "HDMI-A-1",
+    mode     = "3008x1692@59.97Hz",
+    position = "0x0",
+    scale    = "auto",
+})
 
 ---------------------
 ---- MY PROGRAMS ----
@@ -91,8 +97,8 @@ hl.env("SSH_AUTH_SOCK", os.getenv("XDG_RUNTIME_DIR") .. "/ssh-agent.socket")
 -- Refer to https://wiki.hypr.land/Configuring/Basics/Variables/
 hl.config({
     general = {
-        gaps_in  = 0,
-        gaps_out = 0,
+        gaps_in  = 5,
+        gaps_out = 10,
 
         border_size = 0,
 
@@ -280,7 +286,7 @@ hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
 
 hl.bind(mainMod .. " + C", function ()
     local active_window = hl.get_active_window()
-    if active_window ~= nil and active_window.title == ".*ghostty.*" then
+    if active_window ~= nil and active_window.title == "Ghostty" then
         hl.dispatch(hl.dsp.send_shortcut({ mods = "CTRL SHIFT", key = "C"}))
     else
         hl.dispatch(hl.dsp.send_shortcut({ mods = "CTRL", key = "C"}))
@@ -288,7 +294,7 @@ hl.bind(mainMod .. " + C", function ()
 end)
 hl.bind(mainMod .. " + V", function ()
     local active_window = hl.get_active_window()
-    if active_window ~= nil and active_window.title == "com.mitchellh.ghostty" then
+    if active_window ~= nil and active_window.title == "Ghostty" then
         hl.dispatch(hl.dsp.send_shortcut({ mods = "CTRL SHIFT", key = "V"}))
     else
         hl.dispatch(hl.dsp.send_shortcut({ mods = "CTRL", key = "V"}))
@@ -305,9 +311,12 @@ for i = 1, 10 do
     hl.bind(mainMod .. " + SHIFT + " .. key,     hl.dsp.window.move({ workspace = i }))
 end
 
+hl.bind(mainMod .. " + L", hl.dsp.window.move({ monitor = "r" }))
+hl.bind(mainMod .. " + H", hl.dsp.window.move({ monitor = "l" }))
+
 -- Example special workspace (scratchpad)
-hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+-- hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
+-- hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
@@ -381,3 +390,14 @@ hl.window_rule({
     move  = "20 monitor_h-120",
     float = true,
 })
+
+for i = 1, 10 do
+    local target_monitor = (i <= 5) and "DP-3" or "HDMI-A-1"
+    local is_default = (i == 1 or i == 6) -- Sets the initial workspace for each monitor
+
+    hl.workspace_rule({
+        workspace = tostring(i),
+        monitor = target_monitor,
+        default = is_default
+    })
+end
