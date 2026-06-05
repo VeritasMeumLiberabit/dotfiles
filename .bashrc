@@ -61,13 +61,21 @@ export TERM=screen-256color
 # Application Settings
 ################################################################################
 
-if [ "$(uname)" = "Darwin" ]  && [ -f /opt/homebrew/bin/brew ]; then
-	print_module_status "homebrew" true
-	eval "$(/opt/homebrew/bin/brew shellenv)"
-
-	export PATH="/opt/homebrew/bin:$PATH"
+if [ -x "$(command -v fastfetch)" ]; then
+	fastfetch
 else
-	print_module_status "homebrew" false
+	print_module_status "fastfetch" false
+fi
+
+if [ "$(uname)" = "Darwin" ]; then
+	if [ -f /opt/homebrew/bin/brew ]; then
+		print_module_status "homebrew" true
+		eval "$(/opt/homebrew/bin/brew shellenv)"
+
+		export PATH="/opt/homebrew/bin:$PATH"
+	else
+		print_module_status "homebrew" false
+	fi
 fi
 
 if [ -x "$(command -v nvim)" ]; then
@@ -96,20 +104,11 @@ else
 	print_module_status "cargo rust" false
 fi
 
-if [ -f ~/.fzf.bash ] && [ -x "$(command -v fzf)" ]; then
-	print_module_status "fzf" true
-	source ~/.fzf.bash
+if [ -x "$(command -v sk)" ]; then
+	print_module_status "skim" true
+	source <(sk --shell bash --shell-bindings)
 else
-	print_module_status "fzf" false
-fi
-
-# Opam config
-if [ -x "$(command -v opam)" ]; then
-	print_module_status "opam ocaml" true
-
-	eval "$(opam env)"
-else
-	print_module_status "opam ocaml" false
+	print_module_status "skim" false
 fi
 
 if [ -x "$(command -v doctl)" ]; then
@@ -148,24 +147,6 @@ if [ -x "$(command -v lua-format)" ]; then
 	print_module_status "lua-format" true
 else
 	print_module_status "lua-format" false
-fi
-
-if [ -x "$(command -v pyright)" ]; then
-	print_module_status "pyright" true
-else
-	print_module_status "pyright" false
-fi
-
-if [ -x "$(command -v ansible-language-server)" ]; then
-	print_module_status "ansible-language-server" true
-else
-	print_module_status "ansible-language-server" false
-fi
-
-if [ -x "$(command -v clangd)" ]; then
-	print_module_status "clangd" true
-else
-	print_module_status "clangd" false
 fi
 
 if [ -x "$(command -v rust-analyzer)" ]; then
@@ -241,4 +222,9 @@ else
 	print_module_status "shellcheck" false
 fi
 
-source <(kubectl completion bash)
+if [ -x "$(command -v kubectl)" ]; then
+	print_module_status "shellcheck" true
+	source <(kubectl completion bash)
+else
+	print_module_status "kubectl" false
+fi
