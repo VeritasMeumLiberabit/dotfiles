@@ -203,7 +203,7 @@ else
 fi
 
 if [ -x "$(command -v kubectl)" ]; then
-	print_module_status "shellcheck" true
+	print_module_status "kubectl" true
 	source <(kubectl completion bash)
 else
 	print_module_status "kubectl" false
