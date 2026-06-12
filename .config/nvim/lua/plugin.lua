@@ -486,37 +486,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 })
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
-local standard_lsp_options = {capabilities = capabilities}
-
-if vim.fn.executable("lua-language-server") == 1 then
-    vim.lsp.config('lua_ls', {
-        capabilities = capabilities,
-        settings = {
-            Lua = {
-                runtime = {
-                    -- Tell the language server which version of Lua you're using
-                    version = "LuaJIT",
-                    -- Setup your lua path
-                    path = runtime_path
-                },
-                diagnostics = {
-                    -- Get the language server to recognize the `vim` global
-                    globals = {"vim"},
-                    disable = {"lowercase-global"}
-                },
-                workspace = {
-                    -- Make the server aware of Neovim runtime files
-                    library = vim.api.nvim_get_runtime_file("", true)
-                },
-                -- Do not send telemetry data containing a randomized but unique identifier
-                telemetry = {enable = false}
-            }
-        }
-    })
-    vim.lsp.enable('lua_ls')
-end
+if vim.fn.executable("lua-language-server") == 1 then vim.lsp.enable('lua_ls') end
 
 -- if vim.fn.executable("clangd") == 1 then
 --     vim.lsp.config().clangd.setup(standard_lsp_options)

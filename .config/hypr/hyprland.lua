@@ -130,8 +130,9 @@ hl.config({
     },
 
     misc = {
-        disable_hyprland_logo = true,
         disable_splash_rendering = true,
+        force_default_wallpaper = 1, -- Set to 0 or 1 to disable the anime mascot wallpapers
+        disable_hyprland_logo = true -- If true disables the random hyprland logo / anime girl background. :(
     },
 
     animations = {enabled = true}
@@ -273,16 +274,6 @@ hl.config({master = {new_status = "master"}})
 -- See https://wiki.hypr.land/Configuring/Layouts/Scrolling-Layout/ for more
 hl.config({scrolling = {fullscreen_on_one_column = true}})
 
-----------------
-----  MISC  ----
-----------------
-
-hl.config({
-    misc = {
-        force_default_wallpaper = 0, -- Set to 0 or 1 to disable the anime mascot wallpapers
-        disable_hyprland_logo = true -- If true disables the random hyprland logo / anime girl background. :(
-    }
-})
 
 ---------------
 ---- INPUT ----
@@ -455,14 +446,14 @@ hl.window_rule({
     float = true
 })
 
-for i = 1, 10 do
-    local target_monitor = (i <= 5) and "DP-1" or "DP-3"
-    local is_default = (i == 1 or i == 6) -- Sets the initial workspace for each monitor
+hl.workspace_rule({ workspace = tostring(1), monitor = "DP-1", default = true })
+hl.workspace_rule({ workspace = tostring(2), monitor = "DP-1", default = false })
+hl.workspace_rule({ workspace = tostring(3), monitor = "DP-1", default = false })
+hl.workspace_rule({ workspace = tostring(4), monitor = "DP-1", default = false })
+hl.workspace_rule({ workspace = tostring(5), monitor = "DP-1", default = false })
+hl.workspace_rule({ workspace = tostring(6), monitor = "DP-3", default = true })
+hl.workspace_rule({ workspace = tostring(7), monitor = "DP-3", default = false })
+hl.workspace_rule({ workspace = tostring(8), monitor = "DP-3", default = false })
+hl.workspace_rule({ workspace = tostring(9), monitor = "DP-3", default = false })
+hl.workspace_rule({ workspace = tostring(0), monitor = "DP-3", default = false })
 
-    hl.workspace_rule({
-        workspace = tostring(i % 10),
-        monitor = target_monitor,
-        default = is_default
-    })
-
-end
