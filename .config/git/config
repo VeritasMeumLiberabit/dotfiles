@@ -43,3 +43,5 @@
     autosetuprebase = always
 [branch "master"]
     rebase = true
+[safe]
+	directory = /etc/nixos/

@@ -118,25 +118,6 @@ else
 	print_module_status "digitalocean ctl" false
 fi
 
-if [ -f /opt/local/etc/profile.d/bash_completion.sh ] ||
-	[ -f /opt/homebrew/etc/profile.d/bash_completion.sh ] ||
-	[ -f /usr/share/bash-completion/bash_completion ]; then
-
-	print_module_status "bash completion" true
-	if [ -f /opt/local/etc/profile.d/bash_completion.sh ]; then
-		. /opt/local/etc/profile.d/bash_completion.sh
-	fi
-	if [ -f /opt/homebrew/etc/profile.d/bash_completion.sh ]; then
-		. /opt/homebrew/etc/profile.d/bash_completion.sh
-	fi
-
-	if [ -f /usr/share/bash-completion/bash_completion ]; then
-		. /usr/share/bash-completion/bash_completion
-	fi
-else
-	print_module_status "bash completion" false
-fi
-
 if [ -x "$(command -v lua-language-server)" ]; then
 	print_module_status "lua-language-server" true
 else
@@ -160,12 +141,6 @@ if [ -x "$(command -v opam)" ]; then
 	eval $(opam env)
 else
 	print_module_status "opam" false
-fi
-
-if [ -x "$(command -v clang-format)" ]; then
-	print_module_status "clang-format" true
-else
-	print_module_status "clang-format" false
 fi
 
 if [ -x "$(command -v tmux)" ]; then
