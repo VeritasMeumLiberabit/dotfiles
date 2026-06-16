@@ -113,7 +113,6 @@ fi
 
 if [ -x "$(command -v doctl)" ]; then
 	print_module_status "digitalocean ctl" true
-	source $HOME/.doctl.bash
 else
 	print_module_status "digitalocean ctl" false
 fi
